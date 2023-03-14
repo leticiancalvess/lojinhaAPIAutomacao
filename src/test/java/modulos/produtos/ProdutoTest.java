@@ -1,6 +1,7 @@
 package modulos.produtos;
 
 
+import dataFactory.CadastrarUsuarioFactory;
 import dataFactory.ProdutoDataFactory;
 import dataFactory.UsuarioFactory;
 import io.restassured.RestAssured;
@@ -72,5 +73,19 @@ public class ProdutoTest {
                 .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
                 .statusCode(422);
 
+    }
+
+    @Test
+    @DisplayName("Validar que foi criado um novo usuário")
+
+    public void testValidarNovoUsuario() {
+        given()
+                .contentType(ContentType.JSON)
+                .body(CadastrarUsuarioFactory.cadastrarNovoUsuario("Leticia", "leticiancalvess", "teste"))
+                .when()
+                .post("/v2/usuarios")
+                .then()
+                .assertThat()
+                .statusCode(201);
     }
 }
